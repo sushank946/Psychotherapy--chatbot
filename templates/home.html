@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatty - Your Therapy Chatbot</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+                              url('https://images.unsplash.com/photo-1497250681960-ef046c08a56e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        h1 {
+            color: #4a6fa5;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .auth-buttons {
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #3a5a80;
+        }
+        .quotes-section {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .quote {
+            font-style: italic;
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #4a6fa5;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 40px 0;
+        }
+        .feature {
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #666;
+        }
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+        }
+        .flashes li {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .error {
+            background-color: #ffdddd;
+            color: #d8000c;
+        }
+        .success {
+            background-color: #ddffdd;
+            color: #4f8a10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Psychotherapy Chatbot</h1>
+            <p class="tagline">A safe space to share your thoughts and feelings</p>
+            
+            <!-- Add this to your existing home.html -->
+    <div class="auth-buttons">
+    {% if 'username' in session %}
+        <a href="{{ url_for('chat') }}" class="btn">Go to Chat</a>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
+    {% endif %}
+    </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div class="quotes-section">
+            <h2>Words of Comfort</h2>
+            {% for quote in quotes %}
+                <div class="quote">{{ quote }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>24/7 Support</h3>
+                <p>Our chatbot is always available when you need someone to talk to, day or night.</p>
+            </div>
+            <div class="feature">
+                <h3>Judgment-Free Zone</h3>
+                <p>Share your thoughts without fear of judgment or criticism.</p>
+            </div>
+            <div class="feature">
+                <h3>Mental Health Resources</h3>
+                <p>Get helpful information and coping strategies for difficult times.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Remember: You matter. Your feelings matter. Help is available.</p>
+        <p>If you're in crisis, please contact a mental health professional or emergency services.</p>
+    </footer>
+</body>
+</html>
