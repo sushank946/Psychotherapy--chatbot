@@ -21,7 +21,7 @@ class AdvancedMentalHealthChatbot:
         # LLM Initialization
         self.llm = ChatGroq(
             temperature=0.7,
-            groq_api_key="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",
+            groq_api_key="YOUR_GROQ_API_KEY",
             model_name="llama-3.3-70b-versatile"
         )
         
