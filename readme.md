@@ -11,15 +11,18 @@ A Flask-based AI-powered mental health support chatbot that uses NLP and emotion
 - Secure password handling with hashing
 - Beautiful UI using HTML templates
 - Flask-based backend with REST API
+- Crisis keyword detection with support messaging
+- Mood check-ins and journaling APIs for user wellness tracking
 
 ## Tech Stack
 
 - Python
 - Flask
-- SQLite
+- SQLite (local) / PostgreSQL (production)
 - Hugging Face Transformers
 - LangChain + Groq
 - HTML/CSS (Flask Templates)
+- SQLAlchemy + Gunicorn
 
 ---
 
@@ -69,11 +72,31 @@ Then visit: http://127.0.0.1:5000/
 
 ## Environment Variables
 
-Replace the groq_api_key inside the script with your actual Groq API Key:
+Use environment variables for secrets and deployment configuration:
 
-groq_api_key="your_groq_api_key"
+- `GROQ_API_KEY` (required for LLM responses)
+- `SECRET_KEY` (Flask session secret)
+- `DATABASE_URL` (SQLite or PostgreSQL connection string)
+- `SESSION_COOKIE_SECURE` (`true` in production behind HTTPS)
 
-For better security, consider using environment variables or a .env file.
+Copy `.env.example` to `.env` and fill in values.
+
+Example:
+
+```
+GROQ_API_KEY=your_groq_api_key
+SECRET_KEY=replace-with-strong-secret
+DATABASE_URL=postgresql+psycopg2://user:password@host:5432/psychotherapy
+SESSION_COOKIE_SECURE=true
+```
+
+## API Endpoints
+
+- `POST /chat` (JSON) - chatbot conversation
+- `POST /checkin` (JSON) - daily mood check-in (1-5 scale)
+- `POST /journal` (JSON) - create a journal entry
+- `GET /journal` - list recent journal entries
+- `GET /health` - health check for load balancers
 
 ---
 
@@ -83,6 +106,9 @@ chattyauthentication/
 │
 ├── app.py                  # Main Flask app
 ├── users.db                # SQLite database (auto-generated)
+├── docker-compose.yml       # Local Docker stack (app + Postgres)
+├── Dockerfile               # Production container build
+├── .env.example             # Sample environment variables
 ├── templates/              # HTML templates
 │   ├── home.html
 │   ├── signup.html
@@ -96,10 +122,29 @@ chattyauthentication/
 
 ## Future Improvements
 
-- Add journaling feature for users
-- Integrate daily mood tracker
 - Admin panel to manage conversations
+- Export chat/journal history
+- Multi-language support
 - Use environment variables for API keys
+
+## Production Deployment (Zero Downtime)
+
+This project is ready for containerized deployment with Gunicorn and PostgreSQL.
+For zero-downtime deploys, use a platform that supports rolling deployments
+and a shared database (Render, Railway, Fly.io, or Kubernetes).
+
+### Docker (local)
+
+```
+cp .env.example .env
+docker compose up --build
+```
+
+### Gunicorn (production)
+
+```
+gunicorn app:app -b 0.0.0.0:5000 --workers 2 --threads 4 --timeout 120
+```
 
 ---
 

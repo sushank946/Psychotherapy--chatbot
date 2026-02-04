@@ -1,7 +1,14 @@
-langchain_groq
-langchain_core
+flask
+flask-cors
+gunicorn
 langchain_community
+langchain_core
+langchain_groq
+psycopg2-binary
 pypdf
-chromadb
 sentence_transformers
+sqlalchemy
+transformers
+chromadb
 gradio
+pytest
